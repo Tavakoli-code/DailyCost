@@ -57,19 +57,31 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Column(
+            MonthlySummaryItem(
+                label = "Income",
+                amount = "50,000 AFN",
                 modifier = Modifier.weight(1f)
-            ) {
-                Text(text = "Income")
-                Text(text = "50,000 AFN")
-            }
-            Column(
+            )
+            MonthlySummaryItem(
+                label = "Expenses",
+                amount = "15,000 AFN",
                 modifier = Modifier.weight(1f)
-            ) {
-                Text(text = "Expenses")
-                Text(text = "15,000 AFN")
-            }
+            )
         }
+    }
+}
+
+@Composable
+fun MonthlySummaryItem(
+    label: String,
+    amount: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(text = label)
+        Text(text = amount)
     }
 }
 
