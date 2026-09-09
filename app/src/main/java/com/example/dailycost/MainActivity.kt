@@ -20,6 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dailycost.ui.theme.DailyCostTheme
 
+data class HomeUiState(
+    val totalBalance: String,
+    val monthlyIncome: String,
+    val monthlyExpenses: String,
+) {}
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
