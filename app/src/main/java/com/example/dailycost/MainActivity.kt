@@ -24,7 +24,7 @@ data class HomeUiState(
     val totalBalance: String,
     val monthlyIncome: String,
     val monthlyExpenses: String,
-) {}
+)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +33,11 @@ class MainActivity : ComponentActivity() {
             DailyCostTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     HomeScreen(
+                        state = HomeUiState(
+                            totalBalance = "35,000 AFN",
+                            monthlyIncome = "50,000 AFN",
+                            monthlyExpenses = "15,000 AFN",
+                        ),
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -42,7 +47,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    state: HomeUiState,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.padding(all = 8.dp)
     ) {
@@ -52,7 +60,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         Spacer(Modifier.height(8.dp))
         Text(text = "Total Balance")
         Text(
-            text = "35,000 AFN", style = MaterialTheme.typography.headlineMedium
+            text = state.totalBalance, style = MaterialTheme.typography.headlineMedium
         )
         Spacer(Modifier.height(8.dp))
         Text(
@@ -64,12 +72,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         ) {
             MonthlySummaryItem(
                 label = "Income",
-                amount = "50,000 AFN",
+                amount = state.monthlyIncome,
                 modifier = Modifier.weight(1f)
             )
             MonthlySummaryItem(
                 label = "Expenses",
-                amount = "15,000 AFN",
+                amount = state.monthlyExpenses,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -94,6 +102,12 @@ fun MonthlySummaryItem(
 @Composable
 fun HomeScreenPreview() {
     DailyCostTheme {
-        HomeScreen()
+        HomeScreen(
+            state = HomeUiState(
+                totalBalance = "35,000 AFN",
+                monthlyIncome = "50,000 AFN",
+                monthlyExpenses = "15,000 AFN",
+            ),
+        )
     }
 }
