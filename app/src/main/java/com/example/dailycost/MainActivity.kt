@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dailycost.ui.theme.DailyCostTheme
@@ -28,12 +30,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val homeViewModel: HomeViewModel = viewModel()
+            val application = LocalContext.current.applicationContext as DailyCostApplication
+
+            val homeViewModel: HomeViewModel = viewModel(
+                factory = HomeViewModelFactory(
+                    transactionRepository = application.transactionRepository
+                )
+            )
             val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
             DailyCostTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     HomeScreen(
                         state = uiState,
+                        onAddTestExpense = homeViewModel::addTestExpense,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -45,6 +54,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HomeScreen(
     state: HomeUiState,
+    onAddTestExpense: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -60,7 +70,7 @@ fun HomeScreen(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "This Month", style = MaterialTheme.typography.titleLarge
+            text = "Summary", style = MaterialTheme.typography.titleLarge
         )
         Spacer(Modifier.height(8.dp))
         Row(
@@ -76,6 +86,11 @@ fun HomeScreen(
                 amount = state.monthlyExpenses,
                 modifier = Modifier.weight(1f)
             )
+        }
+        Button(
+            onClick = onAddTestExpense
+        ) {
+            Text(text = "Add Test Expense")
         }
     }
 }
@@ -104,6 +119,7 @@ fun HomeScreenPreview() {
                 monthlyIncome = "50,000 AFN",
                 monthlyExpenses = "15,000 AFN",
             ),
+            onAddTestExpense = {}
         )
     }
 }
