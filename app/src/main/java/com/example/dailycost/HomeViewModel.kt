@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val transactionRepository: TransactionRepository
@@ -39,18 +38,4 @@ class HomeViewModel(
                 monthlyExpenses = "0 AFN"
             )
         )
-
-    fun addTestExpense() {
-        viewModelScope.launch {
-            transactionRepository.insert(
-                TransactionEntity(
-                    type = TransactionType.EXPENSE,
-                    amount = 500,
-                    category = "Food",
-                    description = "Test lunch",
-                    date = System.currentTimeMillis()
-                )
-            )
-        }
-    }
 }

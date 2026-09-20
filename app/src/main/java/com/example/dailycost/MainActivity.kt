@@ -40,9 +40,7 @@ class MainActivity : ComponentActivity() {
             val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
             DailyCostTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(
-                        state = uiState,
-                        onAddTestExpense = homeViewModel::addTestExpense,
+                    AppNavigation(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -54,7 +52,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HomeScreen(
     state: HomeUiState,
-    onAddTestExpense: () -> Unit,
+    onAddTransaction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -88,9 +86,9 @@ fun HomeScreen(
             )
         }
         Button(
-            onClick = onAddTestExpense
+            onClick = onAddTransaction
         ) {
-            Text(text = "Add Test Expense")
+            Text(text = "Add Transaction")
         }
     }
 }
@@ -119,7 +117,7 @@ fun HomeScreenPreview() {
                 monthlyIncome = "50,000 AFN",
                 monthlyExpenses = "15,000 AFN",
             ),
-            onAddTestExpense = {}
+            onAddTransaction = {}
         )
     }
 }
