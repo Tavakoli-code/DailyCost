@@ -11,14 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dailycost.ui.theme.DailyCostTheme
 
@@ -28,11 +29,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val homeViewModel: HomeViewModel = viewModel()
+            val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
             DailyCostTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     HomeScreen(
-                        state = homeViewModel.uiState,
-                        onChangeBalance = homeViewModel::changeBalance,
+                        state = uiState,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -44,7 +45,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HomeScreen(
     state: HomeUiState,
-    onChangeBalance: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -58,11 +58,6 @@ fun HomeScreen(
         Text(
             text = state.totalBalance, style = MaterialTheme.typography.headlineMedium
         )
-        Button(
-            onClick = onChangeBalance
-        ) {
-            Text(text = "Change Balance")
-        }
         Spacer(Modifier.height(8.dp))
         Text(
             text = "This Month", style = MaterialTheme.typography.titleLarge
@@ -109,7 +104,6 @@ fun HomeScreenPreview() {
                 monthlyIncome = "50,000 AFN",
                 monthlyExpenses = "15,000 AFN",
             ),
-            onChangeBalance = {}
         )
     }
 }
