@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AddTransactionScreen(
     onBack: () -> Unit,
+    onSave: (TransactionType, Long, String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var amount by remember { mutableStateOf("") }
@@ -28,6 +29,8 @@ fun AddTransactionScreen(
         mutableStateOf(TransactionType.EXPENSE)
     }
 
+    val amountValue = amount.toLongOrNull()
+
     Column(
         modifier = modifier.padding(16.dp)
     ) {
@@ -35,7 +38,6 @@ fun AddTransactionScreen(
             text = "Add Transaction",
             style = MaterialTheme.typography.headlineMedium
         )
-        Text(text = "Selected: $transactionType")
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -73,18 +75,27 @@ fun AddTransactionScreen(
             }
         )
 
-        Button(
-            onClick = {
-                // save later
+        Row {
+            Button(
+                onClick = {
+                    amountValue?.let {
+                        onSave(
+                            transactionType,
+                            it,
+                            description.ifBlank { null }
+                        )
+                    }
+                },
+                enabled = amountValue != null && amountValue > 0
+            ) {
+                Text("Save")
             }
-        ) {
-            Text("Save")
-        }
 
-        Button(
-            onClick = onBack
-        ) {
-            Text(text = "Back")
+            Button(
+                onClick = onBack
+            ) {
+                Text(text = "Back")
+            }
         }
     }
 }

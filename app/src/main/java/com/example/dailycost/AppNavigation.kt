@@ -46,9 +46,25 @@ fun AppNavigation(
         }
 
         composable(Routes.ADD_TRANSACTION) {
+            val addTransactionViewModel: AddTransactionViewModel = viewModel(
+                factory = AddTransactionViewModelFactory(
+                    transactionRepository = application.transactionRepository
+                )
+            )
+
             AddTransactionScreen(
                 onBack = {
                     navController.popBackStack()
+                },
+                onSave = { type, amount, description ->
+                addTransactionViewModel.saveTransaction(
+                    type = type,
+                    amount = amount,
+                    description = description,
+                    onSaved = {
+                        navController.popBackStack()
+                    }
+                    )
                 }
             )
         }
