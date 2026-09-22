@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 object Routes {
     const val HOME = "home"
     const val ADD_TRANSACTION = "add_transaction"
+    const val TRANSACTIONS = "transactions"
 }
 
 @Composable
@@ -41,6 +42,9 @@ fun AppNavigation(
                 state = uiState,
                 onAddTransaction = {
                     navController.navigate(Routes.ADD_TRANSACTION)
+                },
+                onViewTransactions = {
+                    navController.navigate(Routes.TRANSACTIONS)
                 }
             )
         }
@@ -65,6 +69,24 @@ fun AppNavigation(
                         navController.popBackStack()
                     }
                     )
+                }
+            )
+        }
+
+        composable(Routes.TRANSACTIONS) {
+            val transactionsViewModel: TransactionsViewModel = viewModel(
+                factory = TransactionsViewModelFactory(
+                    transactionRepository = application.transactionRepository
+                )
+            )
+
+            val transactions by
+                    transactionsViewModel.transactions.collectAsStateWithLifecycle()
+
+            TransactionsScreen(
+                transactions = transactions,
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }

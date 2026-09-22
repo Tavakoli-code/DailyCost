@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
 fun HomeScreen(
     state: HomeUiState,
     onAddTransaction: () -> Unit,
+    onViewTransactions: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -90,6 +91,11 @@ fun HomeScreen(
         ) {
             Text(text = "Add Transaction")
         }
+        Button(
+            onClick = onViewTransactions
+        ) {
+            Text(text = "Transactions")
+        }
     }
 }
 
@@ -117,7 +123,8 @@ fun HomeScreenPreview() {
                 monthlyIncome = "50,000 AFN",
                 monthlyExpenses = "15,000 AFN",
             ),
-            onAddTransaction = {}
+            onAddTransaction = {},
+            onViewTransactions = {}
         )
     }
 }
