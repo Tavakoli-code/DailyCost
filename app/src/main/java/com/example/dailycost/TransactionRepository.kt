@@ -12,4 +12,14 @@ class TransactionRepository(
     suspend fun insert(transaction: TransactionEntity): Long {
         return transactionDao.insert(transaction)
     }
+
+    fun getTransactionsBetween(
+        startDate: Long,
+        endDate: Long,
+    ): Flow<List<TransactionEntity>> {
+        return transactionDao.getTransactionsBetween(
+            startDate = startDate,
+            endDate = endDate
+        )
+    }
 }

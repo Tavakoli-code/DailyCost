@@ -15,6 +15,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dailycost.ui.theme.DailyCostTheme
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun TransactionsScreen(
@@ -60,6 +63,11 @@ fun TransactionItem(
             )
         }
 
+        Text(
+            text = formatTransactionDate(transaction.date),
+            style = MaterialTheme.typography.bodySmall
+        )
+
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -81,6 +89,15 @@ fun TransactionItem(
         }
     }
     HorizontalDivider()
+}
+
+fun formatTransactionDate(timestamp: Long): String {
+    val formatter = SimpleDateFormat(
+        "dd MMM yyyy",
+        Locale.getDefault()
+    )
+
+    return formatter.format(Date(timestamp))
 }
 
 @Preview(showBackground = true)

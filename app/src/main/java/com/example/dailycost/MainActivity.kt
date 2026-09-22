@@ -16,13 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dailycost.ui.theme.DailyCostTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,14 +26,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val application = LocalContext.current.applicationContext as DailyCostApplication
-
-            val homeViewModel: HomeViewModel = viewModel(
-                factory = HomeViewModelFactory(
-                    transactionRepository = application.transactionRepository
-                )
-            )
-            val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
             DailyCostTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     AppNavigation(
@@ -69,7 +57,7 @@ fun HomeScreen(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "Summary", style = MaterialTheme.typography.titleLarge
+            text = "This Month", style = MaterialTheme.typography.titleLarge
         )
         Spacer(Modifier.height(8.dp))
         Row(
